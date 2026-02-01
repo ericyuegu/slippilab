@@ -36,13 +36,6 @@ function Summary(props: { playerIndex: number }) {
     );
   });
 
-  // we are the low port if there is a player on the higher port
-  const lowPort = Boolean(
-    replayStore.renderDatas.find(
-      (renderData) => renderData.playerInputs.playerIndex > props.playerIndex
-    )
-  );
-
   return (
     <Show when={settings()}>
       <div>
@@ -77,13 +70,23 @@ function Summary(props: { playerIndex: number }) {
             </div>
           </Show>
 
-          <button
-            type="button"
-            class="rounded border px-1 hover:bg-slate-100"
-            onClick={() => downloadCurrentSavestate(lowPort)}
-          >
-            Download savestate
-          </button>
+          {replayStore.renderDatas.length == 2 &&
+            <button
+              type="button"
+              class="rounded border px-1 hover:bg-slate-100"
+              onClick={() => {
+                // we are the low port if there is a player on the higher port
+                const lowPort = Boolean(
+                  replayStore.renderDatas.find(
+                    (renderData) => renderData.playerInputs.playerIndex > props.playerIndex
+                  )
+                );
+                downloadCurrentSavestate(lowPort);
+              }}
+            >
+              Download savestate
+            </button>
+          }
         </Show>
       </div>
     </Show>
