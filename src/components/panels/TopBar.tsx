@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, DownloadIcon } from "~/components/common/icons";
 import { OpenMenu } from "~/components/common/OpenMenu";
 import { UploadDialog } from "~/components/panels/UploadDialog";
 import { currentSelectionStore } from "~/state/selectionStore";
+import { downloadFile } from "~/common/util";
 
 export function TopBar() {
   return (
@@ -32,7 +33,7 @@ export function TopBar() {
             onClick={() => currentSelectionStore().nextFile()}
           />
         </div>
-        <div class="flex h-8 gap-4 justify-self-end">
+        <div class="flex h-8 gap-2 justify-self-end">
           <DownloadIcon
             class="h-8 w-8"
             role="button"
@@ -43,14 +44,7 @@ export function TopBar() {
                 return;
               }
               const file = currentSelectionStore().data.selectedFileAndStub![0];
-              const element = document.createElement("a");
-              const url = URL.createObjectURL(file);
-              element.href = url;
-              element.setAttribute("download", file.name);
-              element.style.display = "none";
-              document.body.appendChild(element);
-              element.click();
-              document.body.removeChild(element);
+              downloadFile(file);
             }}
             title="download .slp"
           />
