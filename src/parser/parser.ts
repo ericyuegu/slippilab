@@ -445,7 +445,7 @@ function parseGameStartEvent(
       playerIndex: playerIndex,
       port: playerIndex + 1,
       internalCharacterIds: Object.keys(
-        metadata?.players[playerIndex]?.characters ?? {}
+        metadata?.players?.[playerIndex]?.characters ?? {}
       ).map((key) => Number(key)),
       externalCharacterId: readUint(
         rawData,
