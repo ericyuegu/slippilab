@@ -93,6 +93,22 @@ export function parseReplay({ metadata, raw }: any): ReplayData {
     console.warn("Game end event not found");
     // throw new Error("Game Ending not found");
   }
+  // Truncated replays (e.g. savestate "finalized" files with no game-end
+  // event) can end after a frame's pre-frame inputs but before its post-frame
+  // state. That leaves a trailing frame whose players have inputs but no
+  // finalized state. Drop such incomplete trailing frames so the rest of the
+  // app can assume every frame has finalized player state.
+  while (frames.length > 0) {
+    const lastFrame = frames[frames.length - 1];
+    if (
+      lastFrame === undefined ||
+      lastFrame.players.some((player) => player && player.state === undefined)
+    ) {
+      frames.pop();
+    } else {
+      break;
+    }
+  }
   return {
     settings: gameSettings,
     frames: frames,

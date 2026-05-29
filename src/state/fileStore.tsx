@@ -72,7 +72,7 @@ export async function load(files: File[], startFrame?: number): Promise<void> {
   }
   if (skipCount > 0) {
     createToast({
-      title: `Skipped ${skipCount} file(s) with CPUs or illegal stages`,
+      title: `Skipped ${skipCount} file(s) with illegal stages or characters`,
       duration: 2000,
       placement: "top-end",
     });

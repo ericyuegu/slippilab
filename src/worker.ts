@@ -22,7 +22,7 @@ onmessage = async (event) => {
               const settings = parseGameSettings(
                 decode(await file.arrayBuffer(), { useTypedArrays: true })
               );
-              if (isLegalGameWithoutCPUs(settings)) {
+              if (isLegalGame(settings)) {
                 const stub = settingsToStub(file, settings);
                 return [file, stub];
               } else {
@@ -66,7 +66,7 @@ onmessage = async (event) => {
   });
 };
 
-function isLegalGameWithoutCPUs(gameSettings: GameSettings): boolean {
+function isLegalGame(gameSettings: GameSettings): boolean {
   const stageName = stageNameByExternalId[gameSettings.stageId];
   if (
     ![
@@ -83,7 +83,7 @@ function isLegalGameWithoutCPUs(gameSettings: GameSettings): boolean {
   if (
     gameSettings.playerSettings
       .filter((p) => p)
-      .some((p) => p.playerType === 1 || p.externalCharacterId >= 26)
+      .some((p) => p.externalCharacterId >= 26)
   ) {
     return false;
   }
